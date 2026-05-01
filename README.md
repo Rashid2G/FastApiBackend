@@ -1,8 +1,10 @@
-<iframe width="1389" height="781" src="https://www.youtube.com/embed/YeC0prStWY8" title="Mini Project 2 | Information Security" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
 # FastAPI Secure Backend
 
 This project is a FastAPI backend for secure authentication and role-based authorization using JWTs, bcrypt password hashing, token blacklisting, and defensive logging.
+
+## Demo
+
+[![Watch the demo on YouTube](https://img.youtube.com/vi/YeC0prStWY8/maxresdefault.jpg)](https://youtu.be/YeC0prStWY8)
 
 ## Features
 
