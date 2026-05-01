@@ -126,6 +126,17 @@ Every `403 Forbidden` authorization failure should be logged to `security.log`.
 
 - [Build Plan](BUILD_PLAN.md)
 - [Security Report](REPORT.md)
+- [Postman Collection](FastAPI_Secure_Backend.postman_collection.json)
+
+## Postman Demo
+
+Import `FastAPI_Secure_Backend.postman_collection.json` into Postman and run the requests in order.
+
+The collection demonstrates:
+
+- Successful Login: a standard user logs in and receives a JWT.
+- Access Denied: the standard user calls `DELETE /user/{id}` and receives `403 Forbidden`.
+- Tamper Test: the JWT payload role is changed to `admin` without resigning, and the server rejects it with `401 Unauthorized`.
 
 ## Tests
 

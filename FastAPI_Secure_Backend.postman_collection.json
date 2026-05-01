@@ -1,0 +1,355 @@
+{
+  "info": {
+    "name": "FastAPI Secure Backend - JWT RBAC Demo",
+    "description": "Demonstrates successful login, role-based access denial, and JWT tamper rejection for the FastAPI secure backend assignment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.collectionVariables.get('runSuffix')) {",
+          "  const suffix = Date.now().toString();",
+          "  pm.collectionVariables.set('runSuffix', suffix);",
+          "  pm.collectionVariables.set('standardUsername', `standard_user_${suffix}`);",
+          "  pm.collectionVariables.set('targetUsername', `delete_target_${suffix}`);",
+          "  pm.collectionVariables.set('standardPassword', 'StrongPassword123!');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "runSuffix",
+      "value": ""
+    },
+    {
+      "key": "standardUsername",
+      "value": ""
+    },
+    {
+      "key": "targetUsername",
+      "value": ""
+    },
+    {
+      "key": "standardPassword",
+      "value": ""
+    },
+    {
+      "key": "targetUserId",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "tamperedToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Confirms the local FastAPI server is running."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Server is healthy', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().status).to.eql('ok');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 - Setup: Register Standard User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{standardUsername}}\",\n  \"password\": \"{{standardPassword}}\",\n  \"role\": \"user\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "register"
+          ]
+        },
+        "description": "Creates a normal user account. This user should not have access to admin-only routes."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Standard user is registered', function () {",
+              "  pm.response.to.have.status(201);",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.username).to.eql(pm.collectionVariables.get('standardUsername'));",
+              "  pm.expect(body.role).to.eql('user');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Setup: Register Target User To Delete",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{targetUsername}}\",\n  \"password\": \"{{standardPassword}}\",\n  \"role\": \"user\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "register"
+          ]
+        },
+        "description": "Creates a second user so the standard user can attempt the admin-only DELETE route."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Target user is registered and id is saved', function () {",
+              "  pm.response.to.have.status(201);",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.role).to.eql('user');",
+              "  pm.collectionVariables.set('targetUserId', body.id);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Successful Login: Standard User Receives Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{standardUsername}}\",\n  \"password\": \"{{standardPassword}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "login"
+          ]
+        },
+        "description": "Successful Login: logs in as a standard user and saves the returned JWT as the collection variable `accessToken`."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "function base64UrlDecode(input) {",
+              "  input = input.replace(/-/g, '+').replace(/_/g, '/');",
+              "  while (input.length % 4) input += '=';",
+              "  return decodeURIComponent(escape(atob(input)));",
+              "}",
+              "",
+              "pm.test('Login succeeds and returns a bearer token', function () {",
+              "  pm.response.to.have.status(200);",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.token_type).to.eql('bearer');",
+              "  pm.expect(body.access_token).to.be.a('string').and.not.empty;",
+              "  pm.collectionVariables.set('accessToken', body.access_token);",
+              "});",
+              "",
+              "pm.test('JWT payload contains username and standard user role', function () {",
+              "  const token = pm.response.json().access_token;",
+              "  const payload = JSON.parse(base64UrlDecode(token.split('.')[1]));",
+              "  pm.expect(payload.sub).to.eql(pm.collectionVariables.get('standardUsername'));",
+              "  pm.expect(payload.role).to.eql('user');",
+              "  pm.expect(payload.exp).to.exist;",
+              "  pm.expect(payload.jti).to.exist;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Access Denied: User Attempts Admin DELETE Route",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/{{targetUserId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "{{targetUserId}}"
+          ]
+        },
+        "description": "Access Denied: uses a valid standard-user JWT against the admin-only DELETE route. Expected result is `403 Forbidden`."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Standard user receives 403 Forbidden', function () {",
+              "  pm.response.to.have.status(403);",
+              "  pm.expect(pm.response.json().detail).to.eql('Admin role required');",
+              "});",
+              "",
+              "pm.test('The target user was not deleted', function () {",
+              "  pm.expect(pm.response.code).to.not.eql(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Tamper Test: Edited Role Claim Is Rejected",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "function base64UrlDecode(input) {",
+              "  input = input.replace(/-/g, '+').replace(/_/g, '/');",
+              "  while (input.length % 4) input += '=';",
+              "  return decodeURIComponent(escape(atob(input)));",
+              "}",
+              "",
+              "function base64UrlEncode(input) {",
+              "  return btoa(unescape(encodeURIComponent(input)))",
+              "    .replace(/=/g, '')",
+              "    .replace(/\\+/g, '-')",
+              "    .replace(/\\//g, '_');",
+              "}",
+              "",
+              "const token = pm.collectionVariables.get('accessToken');",
+              "if (!token) {",
+              "  throw new Error('Missing accessToken. Run request 03 first.');",
+              "}",
+              "",
+              "const parts = token.split('.');",
+              "const payload = JSON.parse(base64UrlDecode(parts[1]));",
+              "payload.role = 'admin';",
+              "payload.tamper_test = 'role edited without server secret';",
+              "",
+              "const tamperedPayload = base64UrlEncode(JSON.stringify(payload));",
+              "const tamperedToken = `${parts[0]}.${tamperedPayload}.${parts[2]}`;",
+              "pm.collectionVariables.set('tamperedToken', tamperedToken);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Server rejects token with modified payload and old signature', function () {",
+              "  pm.response.to.have.status(401);",
+              "  pm.expect(pm.response.json().detail).to.eql('Invalid token');",
+              "});",
+              "",
+              "pm.test('Tampered token is different from the original token', function () {",
+              "  pm.expect(pm.collectionVariables.get('tamperedToken')).to.not.eql(pm.collectionVariables.get('accessToken'));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tamperedToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/user/{{targetUserId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "{{targetUserId}}"
+          ]
+        },
+        "description": "Tamper Test: the pre-request script edits the JWT payload role from `user` to `admin` but keeps the original signature. This simulates editing the token in jwt.io without the server secret. Expected result is `401 Unauthorized` because signature validation fails."
+      },
+      "response": []
+    }
+  ]
+}
