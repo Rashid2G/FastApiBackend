@@ -125,7 +125,7 @@ Every `403 Forbidden` authorization failure should be logged to `security.log`.
 ## Documentation
 
 - [Build Plan](BUILD_PLAN.md)
-- [Security Report](REPORT.md)
+- [Security Report PDF](REPORT.pdf)
 - [Postman Collection](FastAPI_Secure_Backend.postman_collection.json)
 
 ## Postman Demo
