@@ -1,3 +1,13 @@
+<p align="center">
+  <a href="https://youtu.be/YeC0prStWY8">
+    <img src="https://img.youtube.com/vi/YeC0prStWY8/maxresdefault.jpg" alt="Project demo video" width="720">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/YeC0prStWY8">Watch the project demo video</a>
+</p>
+
 # FastAPI Secure Backend
 
 This project is a FastAPI backend for secure authentication and role-based authorization using JWTs, bcrypt password hashing, token blacklisting, and defensive logging.
