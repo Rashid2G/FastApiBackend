@@ -1,12 +1,4 @@
-<p align="center">
-  <a href="https://youtu.be/YeC0prStWY8">
-    <img src="https://img.youtube.com/vi/YeC0prStWY8/maxresdefault.jpg" alt="Project demo video" width="720">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://youtu.be/YeC0prStWY8">Watch the project demo video</a>
-</p>
+<iframe width="1389" height="781" src="https://www.youtube.com/embed/YeC0prStWY8" title="Mini Project 2 | Information Security" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # FastAPI Secure Backend
 
