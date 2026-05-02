@@ -1,5 +1,11 @@
 # Security Report
 
+## Group Members
+
+- Rashid Alkatheri - 230208843
+- Ibrahim Karaja - 230208879
+- Abdullah Al Tamsha - 230208916
+
 ## 1. Why Salting Is Necessary Against Rainbow Table Attacks
 
 Password hashing is necessary because storing plaintext passwords creates immediate risk if the database is leaked. However, hashing alone is not enough when many users may choose common passwords.

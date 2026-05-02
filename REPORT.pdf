@@ -13,82 +13,90 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Times-Bold >>
 endobj
 5 0 obj
-<< /Length 3113 >>
+<< /Length 2987 >>
 stream
 BT /F2 12 Tf 54 738 Td (Security Report) Tj ET
-BT /F2 12 Tf 54 704 Td (1. Why Salting Is Necessary Against Rainbow Table Attacks) Tj ET
-BT /F1 12 Tf 54 684 Td (Password hashing is necessary because storing plaintext passwords creates immediate) Tj ET
-BT /F1 12 Tf 54 668 Td (risk if the database is leaked. However, hashing alone is not enough when many users) Tj ET
-BT /F1 12 Tf 54 652 Td (may choose common passwords.) Tj ET
-BT /F1 12 Tf 54 632 Td (A rainbow table is a precomputed lookup table of password hashes. Attackers build) Tj ET
-BT /F1 12 Tf 54 616 Td (these tables by hashing many common passwords in advance. If a database stores) Tj ET
-BT /F1 12 Tf 54 600 Td (unsalted hashes, the attacker can compare the stolen hashes against the rainbow) Tj ET
-BT /F1 12 Tf 54 584 Td (table and quickly recover weak or reused passwords.) Tj ET
-BT /F1 12 Tf 54 564 Td (Salting prevents this shortcut. A salt is a random value added to each password) Tj ET
-BT /F1 12 Tf 54 548 Td (before hashing. Because each user gets a different salt, the same password produces) Tj ET
-BT /F1 12 Tf 54 532 Td (a different hash for each account. This means an attacker cannot use one precomputed) Tj ET
-BT /F1 12 Tf 54 516 Td (rainbow table against every user in the database.) Tj ET
-BT /F1 12 Tf 54 496 Td (For example, without salts:) Tj ET
-BT /F1 12 Tf 68 474 Td (password123 -> same hash for every user) Tj ET
-BT /F1 12 Tf 54 452 Td (With unique salts:) Tj ET
-BT /F1 12 Tf 68 430 Td (password123 + saltA -> hashA) Tj ET
-BT /F1 12 Tf 68 414 Td (password123 + saltB -> hashB) Tj ET
-BT /F1 12 Tf 54 392 Td (bcrypt automatically generates and stores a salt as part of the final hash string.) Tj ET
-BT /F1 12 Tf 54 376 Td (It is also intentionally slow, which makes large-scale brute force attacks more) Tj ET
-BT /F1 12 Tf 54 360 Td (expensive.) Tj ET
-BT /F2 12 Tf 54 332 Td (2. Risks of Storing Sensitive Data Inside a JWT Payload) Tj ET
-BT /F1 12 Tf 54 312 Td (JWT payloads are not encrypted by default. A standard JWT is only Base64URL encoded) Tj ET
-BT /F1 12 Tf 54 296 Td (and signed. The signature proves that the token was issued by the server and has not) Tj ET
-BT /F1 12 Tf 54 280 Td (been modified, but anyone who has the token can decode the payload and read its) Tj ET
-BT /F1 12 Tf 54 264 Td (contents.) Tj ET
-BT /F1 12 Tf 54 244 Td (Because of this, sensitive data should not be stored inside a JWT payload. Examples) Tj ET
-BT /F1 12 Tf 54 228 Td (of data that should not be placed in a JWT include:) Tj ET
-BT /F1 12 Tf 64 208 Td (- Plaintext passwords) Tj ET
-BT /F1 12 Tf 64 192 Td (- Password hashes) Tj ET
-BT /F1 12 Tf 64 176 Td (- Credit card numbers) Tj ET
-BT /F1 12 Tf 64 160 Td (- National ID numbers) Tj ET
-BT /F1 12 Tf 64 144 Td (- Secret API keys) Tj ET
-BT /F1 12 Tf 64 128 Td (- Private recovery tokens) Tj ET
-BT /F1 12 Tf 64 112 Td (- Highly sensitive personal information) Tj ET
-BT /F1 12 Tf 54 96 Td (If sensitive data is placed in a JWT, it can leak through browser storage, server) Tj ET
-BT /F1 12 Tf 54 80 Td (logs, reverse proxy logs, debug tools, network inspection on compromised devices, or) Tj ET
+BT /F2 12 Tf 54 706 Td (Group Members) Tj ET
+BT /F1 12 Tf 64 686 Td (- Rashid Alkatheri - 230208843) Tj ET
+BT /F1 12 Tf 64 670 Td (- Ibrahim Karaja - 230208879) Tj ET
+BT /F1 12 Tf 64 654 Td (- Abdullah Al Tamsha - 230208916) Tj ET
+BT /F2 12 Tf 54 630 Td (1. Why Salting Is Necessary Against Rainbow Table Attacks) Tj ET
+BT /F1 12 Tf 54 610 Td (Password hashing is necessary because storing plaintext passwords creates immediate) Tj ET
+BT /F1 12 Tf 54 594 Td (risk if the database is leaked. However, hashing alone is not enough when many users) Tj ET
+BT /F1 12 Tf 54 578 Td (may choose common passwords.) Tj ET
+BT /F1 12 Tf 54 558 Td (A rainbow table is a precomputed lookup table of password hashes. Attackers build) Tj ET
+BT /F1 12 Tf 54 542 Td (these tables by hashing many common passwords in advance. If a database stores) Tj ET
+BT /F1 12 Tf 54 526 Td (unsalted hashes, the attacker can compare the stolen hashes against the rainbow) Tj ET
+BT /F1 12 Tf 54 510 Td (table and quickly recover weak or reused passwords.) Tj ET
+BT /F1 12 Tf 54 490 Td (Salting prevents this shortcut. A salt is a random value added to each password) Tj ET
+BT /F1 12 Tf 54 474 Td (before hashing. Because each user gets a different salt, the same password produces) Tj ET
+BT /F1 12 Tf 54 458 Td (a different hash for each account. This means an attacker cannot use one precomputed) Tj ET
+BT /F1 12 Tf 54 442 Td (rainbow table against every user in the database.) Tj ET
+BT /F1 12 Tf 54 422 Td (For example, without salts:) Tj ET
+BT /F1 12 Tf 68 402 Td (password123 -> same hash for every user) Tj ET
+BT /F1 12 Tf 54 382 Td (With unique salts:) Tj ET
+BT /F1 12 Tf 68 362 Td (password123 + saltA -> hashA) Tj ET
+BT /F1 12 Tf 68 346 Td (password123 + saltB -> hashB) Tj ET
+BT /F1 12 Tf 54 326 Td (bcrypt automatically generates and stores a salt as part of the final hash string.) Tj ET
+BT /F1 12 Tf 54 310 Td (It is also intentionally slow, which makes large-scale brute force attacks more) Tj ET
+BT /F1 12 Tf 54 294 Td (expensive.) Tj ET
+BT /F2 12 Tf 54 266 Td (2. Risks of Storing Sensitive Data Inside a JWT Payload) Tj ET
+BT /F1 12 Tf 54 246 Td (JWT payloads are not encrypted by default. A standard JWT is only Base64URL encoded) Tj ET
+BT /F1 12 Tf 54 230 Td (and signed. The signature proves that the token was issued by the server and has not) Tj ET
+BT /F1 12 Tf 54 214 Td (been modified, but anyone who has the token can decode the payload and read its) Tj ET
+BT /F1 12 Tf 54 198 Td (contents.) Tj ET
+BT /F1 12 Tf 54 178 Td (Because of this, sensitive data should not be stored inside a JWT payload. Examples) Tj ET
+BT /F1 12 Tf 54 162 Td (of data that should not be placed in a JWT include:) Tj ET
+BT /F1 12 Tf 64 142 Td (- Plaintext passwords) Tj ET
+BT /F1 12 Tf 64 126 Td (- Password hashes) Tj ET
+BT /F1 12 Tf 64 110 Td (- Credit card numbers) Tj ET
+BT /F1 12 Tf 64 94 Td (- National ID numbers) Tj ET
+BT /F1 12 Tf 64 78 Td (- Secret API keys) Tj ET
 endstream
 endobj
 6 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 3 0 R >> >> /Contents 5 0 R >>
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
 endobj
 7 0 obj
-<< /Length 1892 >>
+<< /Length 2381 >>
 stream
-BT /F1 12 Tf 54 738 Td (accidental sharing of tokens.) Tj ET
-BT /F1 12 Tf 54 718 Td (JWTs should contain only the minimum information needed for authentication and) Tj ET
-BT /F1 12 Tf 54 702 Td (authorization. For this project, the token should include the username, role, expiry) Tj ET
-BT /F1 12 Tf 54 686 Td (time, issued-at time, and token ID. This follows the principle of least privilege by) Tj ET
-BT /F1 12 Tf 54 670 Td (limiting the token to only the claims required by the backend.) Tj ET
-BT /F1 12 Tf 54 650 Td (Recommended JWT payload:) Tj ET
-BT /F1 12 Tf 68 628 Td ({) Tj ET
-BT /F1 12 Tf 68 612 Td (  "sub": "alice",) Tj ET
-BT /F1 12 Tf 68 596 Td (  "role": "user",) Tj ET
-BT /F1 12 Tf 68 580 Td (  "exp": 1710000000,) Tj ET
-BT /F1 12 Tf 68 564 Td (  "iat": 1709996400,) Tj ET
-BT /F1 12 Tf 68 548 Td (  "jti": "unique-token-id") Tj ET
-BT /F1 12 Tf 68 532 Td (}) Tj ET
-BT /F1 12 Tf 54 510 Td (The token should also have a short expiration time. Logout should blacklist the) Tj ET
-BT /F1 12 Tf 54 494 Td (token ID so the token can be rejected before natural expiry.) Tj ET
-BT /F2 12 Tf 54 466 Td (Least Privilege Summary) Tj ET
-BT /F1 12 Tf 54 446 Td (The system should grant each user only the permissions required for their role:) Tj ET
-BT /F1 12 Tf 64 426 Td (- Standard users can access only their profile.) Tj ET
-BT /F1 12 Tf 64 410 Td (- Admin users can access profile data and delete users.) Tj ET
-BT /F1 12 Tf 64 394 Td (- Admin-only routes must verify the role claim and must not rely on hidden frontend) Tj ET
-BT /F1 12 Tf 78 378 Td (controls.) Tj ET
-BT /F1 12 Tf 64 362 Td (- Unauthorized admin-route attempts should return 403 Forbidden and be logged to) Tj ET
-BT /F1 12 Tf 78 346 Td (security.log.) Tj ET
-BT /F1 12 Tf 54 330 Td (This prevents a standard user from guessing admin URLs or forcing access to) Tj ET
-BT /F1 12 Tf 54 314 Td (privileged backend actions.) Tj ET
+BT /F1 12 Tf 64 738 Td (- Private recovery tokens) Tj ET
+BT /F1 12 Tf 64 722 Td (- Highly sensitive personal information) Tj ET
+BT /F1 12 Tf 54 706 Td (If sensitive data is placed in a JWT, it can leak through:) Tj ET
+BT /F1 12 Tf 64 686 Td (- Browser storage) Tj ET
+BT /F1 12 Tf 64 670 Td (- Server logs) Tj ET
+BT /F1 12 Tf 64 654 Td (- Reverse proxy logs) Tj ET
+BT /F1 12 Tf 64 638 Td (- Debug tools) Tj ET
+BT /F1 12 Tf 64 622 Td (- Network inspection on compromised devices) Tj ET
+BT /F1 12 Tf 64 606 Td (- Accidental sharing of tokens) Tj ET
+BT /F1 12 Tf 54 590 Td (JWTs should contain only the minimum information needed for authentication and) Tj ET
+BT /F1 12 Tf 54 574 Td (authorization. For this project, the token should include the username, role, expiry) Tj ET
+BT /F1 12 Tf 54 558 Td (time, issued-at time, and token ID. This follows the principle of least privilege by) Tj ET
+BT /F1 12 Tf 54 542 Td (limiting the token to only the claims required by the backend.) Tj ET
+BT /F1 12 Tf 54 522 Td (Recommended JWT payload:) Tj ET
+BT /F1 12 Tf 68 502 Td ({) Tj ET
+BT /F1 12 Tf 68 486 Td (  "sub": "alice",) Tj ET
+BT /F1 12 Tf 68 470 Td (  "role": "user",) Tj ET
+BT /F1 12 Tf 68 454 Td (  "exp": 1710000000,) Tj ET
+BT /F1 12 Tf 68 438 Td (  "iat": 1709996400,) Tj ET
+BT /F1 12 Tf 68 422 Td (  "jti": "unique-token-id") Tj ET
+BT /F1 12 Tf 68 406 Td (}) Tj ET
+BT /F1 12 Tf 54 386 Td (The token should also have a short expiration time. Logout should blacklist the) Tj ET
+BT /F1 12 Tf 54 370 Td (token ID so the token can be rejected before natural expiry.) Tj ET
+BT /F2 12 Tf 54 342 Td (Least Privilege Summary) Tj ET
+BT /F1 12 Tf 54 322 Td (The system should grant each user only the permissions required for their role:) Tj ET
+BT /F1 12 Tf 64 302 Td (- Standard users can access only their profile.) Tj ET
+BT /F1 12 Tf 64 286 Td (- Admin users can access profile data and delete users.) Tj ET
+BT /F1 12 Tf 64 270 Td (- Admin-only routes must verify the role claim and must not rely on hidden) Tj ET
+BT /F1 12 Tf 78 254 Td (frontend controls.) Tj ET
+BT /F1 12 Tf 64 238 Td (- Unauthorized admin-route attempts should return `403 Forbidden` and be logged to) Tj ET
+BT /F1 12 Tf 78 222 Td (`security.log`.) Tj ET
+BT /F1 12 Tf 54 206 Td (This prevents a standard user from guessing admin URLs or forcing access to) Tj ET
+BT /F1 12 Tf 54 190 Td (privileged backend actions.) Tj ET
 endstream
 endobj
 8 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 3 0 R >> >> /Contents 7 0 R >>
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
 endobj
 xref
 0 9
@@ -98,11 +106,11 @@ xref
 0000000127 00000 n 
 0000000199 00000 n 
 0000000270 00000 n 
-0000003435 00000 n 
-0000003581 00000 n 
-0000005525 00000 n 
+0000003309 00000 n 
+0000003445 00000 n 
+0000005878 00000 n 
 trailer
 << /Size 9 /Root 1 0 R >>
 startxref
-5671
+6014
 %%EOF
